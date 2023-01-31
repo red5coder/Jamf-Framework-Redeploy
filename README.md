@@ -9,6 +9,8 @@ The Jamf Framework Redeploy utility will allow you to easily call this API, and 
 - Jamf Pro Account that has the following minimum persmissions
   - Send Computer Remote Command to Install Package
   - Read - Computers
+- Jamf Pro Server Settings
+  - Read - Checkin
 - The Apple MDM Framework has to be still present on the Mac
 - The serial number of the effect Mac
 
