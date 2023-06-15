@@ -39,6 +39,7 @@ struct ContentView: View {
                     TextField("https://your-jamf-server.com" , text: $jamfURL)
                         .textFieldStyle(.roundedBorder)
                         .onChange(of: jamfURL) { newValue in
+                            print("url is \(jamfURL)")
                             let defaults = UserDefaults.standard
                             defaults.set(jamfURL , forKey: "jamfURL")
                             updateAction()
@@ -46,6 +47,7 @@ struct ContentView: View {
                     TextField("Your Jamf Pro admin user name" , text: $userName)
                         .textFieldStyle(.roundedBorder)
                         .onChange(of: userName) { newValue in
+                            print("User name is \(userName)")
                             let defaults = UserDefaults.standard
                             defaults.set(userName , forKey: "userName")
                             updateAction()
@@ -60,7 +62,7 @@ struct ContentView: View {
                                 }
                             } else {
                                 DispatchQueue.global(qos: .background).async {
-                                    Keychain().save(service: "co.uk.mallion.Jamf-Framework-Redeploy", account: "", data: "")
+                                    Keychain().save(service: "co.uk.mallion.Jamf-Framework-Redeploy", account: userName, data: "")
                                 }
                             }
                             updateAction()
@@ -81,6 +83,16 @@ struct ContentView: View {
             .onChange(of: savePassword) { newValue in
                 let defaults = UserDefaults.standard
                 defaults.set(savePassword, forKey: "savePassword")
+                if savePassword {
+                    DispatchQueue.global(qos: .background).async {
+                        Keychain().save(service: "co.uk.mallion.Jamf-Framework-Redeploy", account: userName, data: password)
+                    }
+                } else {
+                    DispatchQueue.global(qos: .background).async {
+                        Keychain().save(service: "co.uk.mallion.Jamf-Framework-Redeploy", account: userName, data: "")
+                    }
+                }
+
             }
             
             HStack {
