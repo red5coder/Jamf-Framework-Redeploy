@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FB7EA00C2C6F6BEF00C990E4 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB7EA00B2C6F6BEF00C990E4 /* Logger.swift */; };
 		FBFE2ED1296C6A7000351FF3 /* Jamf_Framework_RedeployApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFE2ED0296C6A7000351FF3 /* Jamf_Framework_RedeployApp.swift */; };
 		FBFE2ED3296C6A7000351FF3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFE2ED2296C6A7000351FF3 /* ContentView.swift */; };
 		FBFE2ED5296C6A7100351FF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBFE2ED4296C6A7100351FF3 /* Assets.xcassets */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FB7EA00B2C6F6BEF00C990E4 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		FBFE2ECD296C6A7000351FF3 /* Jamf Framework Redeploy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Jamf Framework Redeploy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBFE2ED0296C6A7000351FF3 /* Jamf_Framework_RedeployApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Jamf_Framework_RedeployApp.swift; sourceTree = "<group>"; };
 		FBFE2ED2296C6A7000351FF3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				FBFE2ED4296C6A7100351FF3 /* Assets.xcassets */,
 				FBFE2ED9296C6A7100351FF3 /* Jamf_Framework_Redeploy.entitlements */,
 				FBFE2ED6296C6A7100351FF3 /* Preview Content */,
+				FB7EA00B2C6F6BEF00C990E4 /* Logger.swift */,
 			);
 			path = "Jamf Framework Redeploy";
 			sourceTree = "<group>";
@@ -145,6 +148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB7EA00C2C6F6BEF00C990E4 /* Logger.swift in Sources */,
 				FBFE2ED3296C6A7000351FF3 /* ContentView.swift in Sources */,
 				FBFE2EE2296DAEBB00351FF3 /* Keychain.swift in Sources */,
 				FBFE2EE0296D62E200351FF3 /* JamfProApi.swift in Sources */,
@@ -276,7 +280,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Jamf Framework Redeploy/Jamf_Framework_Redeploy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 34;
+				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_ASSET_PATHS = "\"Jamf Framework Redeploy/Preview Content\"";
 				DEVELOPMENT_TEAM = VR4GB7TBDP;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -289,7 +293,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "co.uk.mallion.Jamf-Framework-Redeploy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -305,7 +309,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Jamf Framework Redeploy/Jamf_Framework_Redeploy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 34;
+				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_ASSET_PATHS = "\"Jamf Framework Redeploy/Preview Content\"";
 				DEVELOPMENT_TEAM = VR4GB7TBDP;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -318,7 +322,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "co.uk.mallion.Jamf-Framework-Redeploy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

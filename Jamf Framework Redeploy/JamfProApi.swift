@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os.log
 
 struct JamfProAPI {
     
@@ -19,6 +20,7 @@ struct JamfProAPI {
 //    }
     
     func getToken(jssURL: String, clientID: String, secret: String ) async -> (JamfOAuth?,Int?) {
+        Logger.loggerapi.info("About to fetch an authentication token")
         guard var jamfAuthEndpoint = URL(string: jssURL) else {
             return (nil, nil)
         }
@@ -50,6 +52,10 @@ struct JamfProAPI {
         }
         
         let httpResponse = response as? HTTPURLResponse
+        if let httpResponse {
+            Logger.loggerapi.info("Response from authenticating: \(httpResponse.statusCode, privacy: .public)")
+        }
+
         do {
             let jssToken = try JSONDecoder().decode(JamfOAuth.self, from: data)
             return (jssToken, httpResponse?.statusCode)
@@ -61,6 +67,7 @@ struct JamfProAPI {
     
     //1.0.2 Change
     func getComputerID(jssURL: String, authToken: String, serialNumber: String) async -> (Int?,Int?) {
+        Logger.loggerapi.info("About to fetch Computer ID for \(serialNumber, privacy: .public)")
         guard var jamfcomputerEndpoint = URLComponents(string: jssURL) else {
             return (nil, nil)
         }
@@ -82,8 +89,12 @@ struct JamfProAPI {
             return (nil, nil)
         }
         let httpResponse = response as? HTTPURLResponse
+        if let httpResponse {
+            Logger.loggerapi.info("Response from fetching computer id: \(httpResponse.statusCode, privacy: .public)")
+        }
         do {
             let computer = try JSONDecoder().decode(Computer.self, from: data)
+            Logger.loggerapi.info("Computer ID found \(computer.computer.general.id, privacy: .public)")
             return (computer.computer.general.id, httpResponse?.statusCode)
         } catch _ {
             return (nil, httpResponse?.statusCode)
@@ -92,6 +103,7 @@ struct JamfProAPI {
     
 
     func redeployJamfFramework(jssURL: String, authToken: String, computerID: Int) async -> Int? {
+        Logger.loggerapi.info("About to redeploy the framework for computer id: \(computerID, privacy: .public)")
         guard var jamfRedeployEndpoint = URLComponents(string: jssURL) else {
             return nil
         }
@@ -113,6 +125,9 @@ struct JamfProAPI {
         }
         
         let httpResponse = response as? HTTPURLResponse
+        if let httpResponse {
+            Logger.loggerapi.info("Response from redeploying framework: \(httpResponse.statusCode, privacy: .public)")
+        }
         return httpResponse?.statusCode
     }
 }
