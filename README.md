@@ -2,7 +2,8 @@
 With the release of Jamf Pro 10.36, a new API endpoint was added, which allows you to distribute a QuickAdd.pkg to the macOS client to re-deploy the Jamf Framework. Under the hood, its using the InstallEnterpriseApplication MDM command.
 
 The Jamf Framework Redeploy utility will allow you to easily call this API, and re-deploy the Jamf Framework for a selected computer.
-<img width="612" alt="app" src="https://user-images.githubusercontent.com/29920386/211601229-bd8e5258-ddcc-4225-b048-d6a0217848a9.png">
+<img width="612" alt="redeploy" src="https://github.com/user-attachments/assets/f7f276c0-0242-4c39-bd45-2bc703711e84">
+
 ### Requirements
 
 - A Mac running macOS Venture (13.0)
