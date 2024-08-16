@@ -7,7 +7,7 @@ The Jamf Framework Redeploy utility will allow you to easily call this API, and 
 ### Requirements
 
 - A Mac running macOS Venture (13.0)
-- Jamf Pro Account that has the following minimum persmissions
+- Jamf Pro API Role / Client that has the following minimum persmissions
   - Send Computer Remote Command to Install Package
   - Read - Computers
 - Jamf Pro Server Settings
