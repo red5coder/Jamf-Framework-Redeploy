@@ -30,8 +30,8 @@ struct ContentView: View {
               
                 VStack(alignment: .trailing, spacing: 12.0) {
                     Text("Jamf Server URL:")
-                    Text("Username:")
-                    Text("Password:")
+                    Text("Client ID:")
+                    Text("Secret:")
                 }
 
                 
@@ -39,7 +39,6 @@ struct ContentView: View {
                     TextField("https://your-jamf-server.com" , text: $jamfURL)
                         .textFieldStyle(.roundedBorder)
                         .onChange(of: jamfURL) { newValue in
-                            print("url is \(jamfURL)")
                             let defaults = UserDefaults.standard
                             defaults.set(jamfURL , forKey: "jamfURL")
                             updateAction()
@@ -47,7 +46,6 @@ struct ContentView: View {
                     TextField("Your Jamf Pro admin user name" , text: $userName)
                         .textFieldStyle(.roundedBorder)
                         .onChange(of: userName) { newValue in
-                            print("User name is \(userName)")
                             let defaults = UserDefaults.standard
                             defaults.set(userName , forKey: "userName")
                             updateAction()
@@ -116,7 +114,6 @@ struct ContentView: View {
             .disabled(buttonDisabled)
         }
         .onAppear {
-            print("Appeaer")
             let defaults = UserDefaults.standard
             userName = defaults.string(forKey: "userName") ?? ""
             jamfURL = defaults.string(forKey: "jamfURL") ?? ""
@@ -152,10 +149,10 @@ struct ContentView: View {
 
     
     func redploy() async {
-        let jamfPro = JamfProAPI(username: userName, password: password)
+        let jamfPro = JamfProAPI()
         
-        let (authToken, _) = await jamfPro.getToken(jssURL: jamfURL, base64Credentials: jamfPro.base64Credentials)
-        
+        let (authToken, _) = await jamfPro.getToken(jssURL: jamfURL, clientID: userName, secret: password)
+        print(authToken)
         guard let authToken else {
             alertMessage = "Could not authenticate. Please check the url and authentication details"
             alertTitle = "Authentication Error"
@@ -164,8 +161,8 @@ struct ContentView: View {
         }
         
         
-        
-        let (computerID, computerResponse) = await jamfPro.getComputerID(jssURL: jamfURL, base64Credentials: jamfPro.base64Credentials, serialNumber: serialNumber)
+        //1.0.2 Change
+        let (computerID, computerResponse) = await jamfPro.getComputerID(jssURL: jamfURL, authToken: authToken.access_token, serialNumber: serialNumber)
         
         guard let computerID else {
             alertMessage = "Could not find this computer, please check the serial number."
@@ -181,7 +178,7 @@ struct ContentView: View {
             return
         }
 
-        let redeployResponse = await jamfPro.redeployJamfFramework(jssURL: jamfURL, authToken: authToken.token, computerID: computerID)
+        let redeployResponse = await jamfPro.redeployJamfFramework(jssURL: jamfURL, authToken: authToken.access_token, computerID: computerID)
         
         guard let redeployResponse, redeployResponse == 202  else {
             alertMessage = "Could not queue the redeploy the Jamf Managment Framework."

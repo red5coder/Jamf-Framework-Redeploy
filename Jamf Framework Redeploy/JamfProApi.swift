@@ -9,46 +9,58 @@ import Foundation
 
 struct JamfProAPI {
     
-    var username: String
-    var password: String
+//    var username: String
+//    var password: String
+//    
+//    var base64Credentials: String {
+//        return "\(username):\(password)"
+//            .data(using: String.Encoding.utf8)!
+//            .base64EncodedString()
+//    }
     
-    var base64Credentials: String {
-        return "\(username):\(password)"
-            .data(using: String.Encoding.utf8)!
-            .base64EncodedString()
-    }
-    
-    func getToken(jssURL: String, base64Credentials: String) async -> (JamfAuth?,Int?) {
-        guard var jamfAuthEndpoint = URLComponents(string: jssURL) else {
+    func getToken(jssURL: String, clientID: String, secret: String ) async -> (JamfOAuth?,Int?) {
+        guard var jamfAuthEndpoint = URL(string: jssURL) else {
             return (nil, nil)
         }
         
-        jamfAuthEndpoint.path="/api/v1/auth/token"
+        jamfAuthEndpoint.append(path: "/api/oauth/token")
 
-        guard let url = jamfAuthEndpoint.url else {
-            return (nil, nil)
-        }
+        let parameters = [
+            "client_id": clientID,
+            "grant_type": "client_credentials",
+            "client_secret": secret
+        ]
 
-        var authRequest = URLRequest(url: url)
+
+//        guard let url = jamfAuthEndpoint.url else {
+//            return (nil, nil)
+//        }
+
+        var authRequest = URLRequest(url: jamfAuthEndpoint)
         authRequest.httpMethod = "POST"
-        authRequest.setValue("Basic \(base64Credentials)", forHTTPHeaderField: "Authorization")
-        
+        authRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        let postData = parameters.map { key, value in
+            return "\(key)=\(value)"
+        }.joined(separator: "&")
+        authRequest.httpBody = postData.data(using: .utf8)
+
         guard let (data, response) = try? await URLSession.shared.data(for: authRequest)
         else {
             return (nil, nil)
         }
         
         let httpResponse = response as? HTTPURLResponse
-        
         do {
-            let jssToken = try JSONDecoder().decode(JamfAuth.self, from: data)
+            let jssToken = try JSONDecoder().decode(JamfOAuth.self, from: data)
             return (jssToken, httpResponse?.statusCode)
         } catch _ {
             return (nil, httpResponse?.statusCode)
         }
     }
     
-    func getComputerID(jssURL: String, base64Credentials: String, serialNumber: String) async -> (Int?,Int?) {
+    
+    //1.0.2 Change
+    func getComputerID(jssURL: String, authToken: String, serialNumber: String) async -> (Int?,Int?) {
         guard var jamfcomputerEndpoint = URLComponents(string: jssURL) else {
             return (nil, nil)
         }
@@ -62,7 +74,7 @@ struct JamfProAPI {
         
         var computerRequest = URLRequest(url: url)
         computerRequest.httpMethod = "GET"
-        computerRequest.setValue("Basic \(base64Credentials)", forHTTPHeaderField: "Authorization")
+        computerRequest.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
         computerRequest.setValue("application/json", forHTTPHeaderField: "Accept")
         
         guard let (data, response) = try? await URLSession.shared.data(for: computerRequest)
@@ -106,9 +118,13 @@ struct JamfProAPI {
 }
 
 // MARK: - Jamf Pro Auth Model
-struct JamfAuth: Decodable {
-    let token: String
-    let expires: String
+struct JamfOAuth: Decodable {
+    let access_token: String
+    let expires_in: Int
+    enum CodingKeys: String, CodingKey {
+        case access_token
+        case expires_in
+    }
 }
 
 struct Computer: Codable {

@@ -20,4 +20,4 @@ If successful, within the management history of that device you should see a Ins
 <img width="1282" alt="history" src="https://user-images.githubusercontent.com/29920386/211600803-88c253bc-0ff1-4ced-a753-c6151ceae58c.png">
 
 ### History Update
-- v1.0.3 - Authentication now uses API Roles and Clients. Support for basic authentication has been removed.
+- v1.1 - Authentication now uses API Roles and Clients. Support for basic authentication has been removed.
